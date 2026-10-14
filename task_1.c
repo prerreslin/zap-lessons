@@ -3,11 +3,10 @@
 void turn_right();
 void jump_over_right();
 void jump_over_left();
-int if_beeper();
 
 int main() {
     turn_on("task_1.kw");
-    set_step_delay(0);
+    set_step_delay(100);
 
     put_beeper();
     jump_over_right();
@@ -28,16 +27,6 @@ void turn_west() {
     }
 }
 
-int if_beeper() {
-    if (beepers_present()) {
-        pick_beeper();
-        turn_west();
-        return 1;
-    }
-    else {
-        return 0;
-    }
-}
 
 void jump_over_right() {
     while(true) {
@@ -57,11 +46,19 @@ void jump_over_right() {
         }
         turn_right();
         while(front_is_clear()) {
-            if (if_beeper()) {
+            if (beepers_present()) {
+                pick_beeper();
                 jump_over_left();
                 return;
             }
-            step();
+            else {
+                step();
+            }
+            if (beepers_present()) {
+                pick_beeper();
+                jump_over_left();
+                return;
+            }
         }
         turn_left();
     }
